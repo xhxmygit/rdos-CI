@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="RDOSWebAPIContext-Web.config Connection String" description="RDOSWebAPIContext Connection String used in web.config by the application to access the database." defaultValue="Data Source=(localdb)\v11.0; Initial Catalog=RDOSWebAPIContext-20140818144342; Integrated Security=True; MultipleActiveResultSets=True; AttachDbFilename=|DataDirectory|RDOSWebAPIContext-20140818144342.mdf" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\Projects\\RDOSWebAPI\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='RDOSWebAPIContext']/@connectionString" />
+  </parameter>
+</parameters>

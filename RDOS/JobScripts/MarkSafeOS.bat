@@ -1,0 +1,1 @@
+reg add HKLM\Software\Microsoft\OSTC /v IsSafeOS /t REG_DWORD /d 1

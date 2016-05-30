@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <displayName>InstallRDOS</displayName>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>SRCRDOSVHDDIR</name>
+          <description></description>
+          <defaultValue>\\wssgfsc\SHOSTC\RDOS\OS140</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>DSTRDOSVHDDIR</name>
+          <description></description>
+          <defaultValue>C:\OS\140\</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>NETUSER</name>
+          <description></description>
+          <defaultValue>fareast\pettest</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>NETUSER_PWD</name>
+          <description></description>
+          <defaultValue>6H/dhcyT4ATbNc/KhLkl4cJJDJPMWRpQMlMEzwr6foc=</defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>RDOSHOST</name>
+          <description></description>
+          <defaultValue>weyao-acer</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>RDOSScriptRoot</name>
+          <description></description>
+          <defaultValue>c:\RDOS\Repo\Linuxonazureci\RDOS\JobScripts</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>RDOSHOSTAdmin</name>
+          <description></description>
+          <defaultValue>weyao-acer\administrator</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>RDOSHOSTPWD</name>
+          <description></description>
+          <defaultValue>PA$$$$word!!</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>SAFEOSAdmin</name>
+          <description></description>
+          <defaultValue>weyao-acer\administrator</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>SAFEOSPWD</name>
+          <description></description>
+          <defaultValue>PA$$word!!</defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>true</concurrentBuild>
+  <customWorkspace>C:\JenkinsWS\InstallRDOS</customWorkspace>
+  <builders>
+    <hudson.tasks.BatchFile>
+      <command>@echo off
+@echo on
+CD %RDOSScriptRoot%\
+PAEXEC.exe \\%RDOSHOST% -u %SAFEOSAdmin% -p %SAFEOSPWD% -c .\CopyAndInstallRDOS.bat %NETUSER% %NETUSER_PWD%  %SRCRDOSVHDDIR% %DSTRDOSVHDDIR% 
+
+REM Wait boot to RDOS
+powershell ^
+&quot;while($true){^
+  sleep 5;^
+  ping %RDOSHOST% -n 1;^
+  if($LASTEXITCODE -eq 1) {break};^
+};^
+echo &quot;WaitRebooting&quot;; ^
+$count=0;^
+while($count -le 20){^
+  sleep 30;^
+  $count+=1;^
+  ping %RDOSHOST% -n 1;^
+  if($LASTEXITCODE -eq 0) {^
+    .\PAEXEC.exe \\%RDOSHOST% -u %RDOSHOSTAdmin% -p &apos;%RDOSHOSTPWD%&apos; whoami ;^
+    If($LASTEXITCODE -eq 0){break};^
+  }^
+};^
+if($count -ge 20){exit 1}^
+&quot;
+</command>
+    </hudson.tasks.BatchFile>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

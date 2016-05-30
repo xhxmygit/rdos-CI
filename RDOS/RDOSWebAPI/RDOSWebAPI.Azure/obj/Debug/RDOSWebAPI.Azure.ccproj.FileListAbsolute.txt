@@ -1,0 +1,2 @@
+D:\Projects\RDOSWebAPI\RDOSWebAPI.Azure\bin\Debug\ServiceConfiguration.cscfg
+D:\Projects\RDOSWebAPI\RDOSWebAPI.Azure\bin\Debug\ServiceDefinition.csdef

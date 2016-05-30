@@ -1,0 +1,1 @@
+powershell "PAEXEC.exe \\weyao-acer -u weyao-acer\administrator -p 'PA$$word!!' whoami" 
